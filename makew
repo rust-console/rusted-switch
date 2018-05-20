@@ -1,7 +1,6 @@
 #!/bin/bash
 
 export PATH=$DEVKITPATH/devkitA64/bin:$PATH
-
 BUILD=build
 TARGET_TRIPLE=aarch64-none-elf
 RUST_BINARY=$(cat Cargo.toml | grep name | cut -d\" -f 2 | tr - _)

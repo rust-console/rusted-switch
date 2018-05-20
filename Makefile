@@ -42,6 +42,18 @@ APP_AUTHOR	:= Igor Borges
 APP_VERSION	:= 0.0.5
 
 #---------------------------------------------------------------------------------
+# rust variables
+#---------------------------------------------------------------------------------
+TARGET_TRIPLE ?= aarch64-none-elf
+XARGO ?= CARGO_INCREMENTAL=0 RUST_TARGET_PATH="$(TOPDIR)" xargo
+
+RUST_BINARY := $(shell cat $(TOPDIR)/Cargo.toml | grep name | cut -d\" -f 2 | tr - _)
+RUST_BUILD_DIR := $(TOPDIR)/target/$(TARGET_TRIPLE)
+RUST_RELEASE_LIB := $(RUST_BUILD_DIR)/release/lib$(RUST_BINARY).a
+RUST_DEPS = $(TOPDIR)/Xargo.toml $(TOPDIR)/Cargo.toml $(TOPDIR)/build.rs $(TOPDIR)/src/*.rs
+RUST_LIB := $(TOPDIR)/$(BUILD)/lib$(RUST_BINARY).a
+
+#---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
 ARCH	:=	-march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIE
@@ -56,7 +68,7 @@ CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:= -lnx -L. -lrusted_switch
+LIBS	:= -lnx -L. -l$(RUST_BINARY)
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -147,6 +159,7 @@ $(BUILD):
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
+	@$(XARGO) clean
 	@rm -fr $(OUTDIR) $(BUILD)/*
 
 
@@ -171,7 +184,7 @@ else
 $(OUTPUT).nro	:	$(OUTPUT).elf
 endif
 
-$(OUTPUT).elf	:	$(OFILES)
+$(OUTPUT).elf	:	$(OFILES) $(RUST_LIB)
 
 #---------------------------------------------------------------------------------
 # you need a rule like this for each extension you use as binary data
@@ -186,3 +199,17 @@ $(OUTPUT).elf	:	$(OFILES)
 #---------------------------------------------------------------------------------------
 endif
 #---------------------------------------------------------------------------------------
+
+#---------------------------------------------------------------------------------
+# rust rules
+#---------------------------------------------------------------------------------
+check:
+	@$(XARGO) check --target=$(TARGET_TRIPLE)
+
+$(RUST_RELEASE_LIB): $(RUST_DEPS)
+	@echo "+ Building $@ [xargo --release]"
+	@echo $(XARGO) build --release --target=$(TARGET_TRIPLE)
+	@$(XARGO) build --release --target=$(TARGET_TRIPLE)
+
+$(RUST_LIB): $(RUST_RELEASE_LIB) | $(BUILD_DIR)
+	@cp $< $@
