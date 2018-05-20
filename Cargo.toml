@@ -1,0 +1,27 @@
+[package]
+name = "rusted-switch"
+version = "0.0.5"
+authors = ["igor@borges.me"]
+
+[lib]
+crate-type = ["staticlib"]
+
+[profile.dev]
+panic = "abort"
+lto = true
+debug = true
+
+[profile.test]
+lto = true
+debug = true
+
+[profile.release]
+panic = "abort"
+lto = true
+debug = true
+
+[dependencies]
+rlibc = "*"
+
+[build-dependencies]
+bindgen = "0.37.0"

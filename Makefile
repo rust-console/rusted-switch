@@ -39,7 +39,7 @@ EXEFS_SRC	:=	exefs_src
 
 APP_TITLE		:= Rusted Switch
 APP_AUTHOR	:= Igor Borges
-APP_VERSION	:= 0.0.4
+APP_VERSION	:= 0.0.5
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -56,7 +56,7 @@ CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:= -lnx -L. -lrust
+LIBS	:= -lnx -L. -lrusted_switch
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -141,13 +141,13 @@ endif
 all: $(BUILD)
 
 $(BUILD):
-	@[ -d $@ ] || mkdir -p $@ $(BUILD) $(OUTDIR)
+	mkdir -p $@ $(BUILD) $(OUTDIR)
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(OUTDIR)/*
+	@rm -fr $(OUTDIR) $(BUILD)/*
 
 
 #---------------------------------------------------------------------------------
@@ -171,10 +171,7 @@ else
 $(OUTPUT).nro	:	$(OUTPUT).elf
 endif
 
-$(OUTPUT).elf	:	$(OFILES) #librust.a
-
-# librust.a:
-# 	@cp /Users/igor/Projects/rpi3-rust-template/target/aarch64-none-elf/release/libswitch_rust.a $@
+$(OUTPUT).elf	:	$(OFILES)
 
 #---------------------------------------------------------------------------------
 # you need a rule like this for each extension you use as binary data
