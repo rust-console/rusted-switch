@@ -1,15 +1,9 @@
 #!/bin/bash
 
 export PATH=$DEVKITPATH/devkitA64/bin:$PATH
-BUILD=build
 TARGET_TRIPLE=aarch64-none-elf
-RUST_BINARY=$(cat Cargo.toml | grep name | cut -d\" -f 2 | tr - _)
-
-RUST_RELEASE_LIB="target/$TARGET_TRIPLE/release/lib${RUST_BINARY}.a"
-RUST_LIB="$BUILD/lib${RUST_BINARY}.a"
 
 CARGO_INCREMENTAL=0 RUST_TARGET_PATH="$PWD" xargo build --release --target=$TARGET_TRIPLE
-cp -f $RUST_RELEASE_LIB $RUST_LIB
 
 echo "$@"
 make "$@"

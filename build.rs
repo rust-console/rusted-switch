@@ -12,26 +12,34 @@ pub fn main() {
         // bindings for.
         .trust_clang_mangling(false)
         .use_core()
-        .ctypes_prefix("")
+        .ctypes_prefix("lang_items")
 
         .header("wrapper.h")
 
         .clang_arg("-I/opt/devkitpro/libnx/include")
         .clang_arg("-I/opt/devkitpro/devkitA64/aarch64-none-elf/include")
         
+        .clang_arg("-I/opt/devkitpro/devkitA64/lib/gcc/aarch64-none-elf/7.3.0/include")
         .whitelist_function("gfxInitDefault")
         // .whitelist_function("consoleInit")
+        .whitelist_function("consoleInit")
         .whitelist_function("appletMainLoop")
         .whitelist_function("hidScanInput")
         // .whitelist_function("hidKeysDown")
+        .whitelist_function("hidKeysDown")
         .whitelist_function("gfxFlushBuffers")
         .whitelist_function("gfxSwapBuffers")
         .whitelist_function("gfxWaitForVsync")
         .whitelist_function("gfxExit")
+        
+        .whitelist_function("printf")
 
         // .blacklist_type("u16")
         // .blacklist_type("u32")
         // .blacklist_type("u64")
+        .blacklist_type("u16")
+        .blacklist_type("u32")
+        .blacklist_type("u64")
         
         // Finish the builder and generate the bindings.
         .generate()
