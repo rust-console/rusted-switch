@@ -1,4 +1,4 @@
-#![feature(lang_items)]
+#![feature(lang_items, const_fn)]
 #![no_std]
 #![allow(non_camel_case_types)]
 #![allow(non_upper_case_globals)]
@@ -8,26 +8,20 @@
 
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
-#[no_mangle] pub unsafe extern fn rust_appletMainLoop() -> bool { appletMainLoop() }
-#[no_mangle] pub unsafe extern fn rust_gfxInitDefault() { gfxInitDefault() }
-#[no_mangle] pub unsafe extern fn rust_hidScanInput() { hidScanInput() }
-#[no_mangle] pub unsafe extern fn rust_gfxFlushBuffers() { gfxFlushBuffers() }
-#[no_mangle] pub unsafe extern fn rust_gfxSwapBuffers() { gfxSwapBuffers() }
-#[no_mangle] pub unsafe extern fn rust_gfxWaitForVsync() { gfxWaitForVsync() }
-#[no_mangle] pub unsafe extern fn rust_gfxExit() { gfxExit() }
-
 #[no_mangle]
-pub unsafe extern fn like_a_main() {
+pub unsafe extern fn rust_main() {
+  printf("\x1b[16;16HPress PLUS to exit.".as_ptr() as *const i8);
+
   while appletMainLoop() {
     hidScanInput();
 
-    let kDown = hidKeysDown(HidControllerID_CONTROLLER_P1_AUTO);
+    let kDown = HidControllerKeys(hidKeysDown(HidControllerID::CONTROLLER_P1_AUTO) as u32);
 
-    if kDown & 10 > 0 { // KEY_PLUS
+    if kDown == HidControllerKeys::KEY_PLUS {
       break;
     }
 
-    printf("Hello, world: %d\n".as_ptr() as *const i8, kDown);
+    printf("This key is pressed: %d\n".as_ptr() as *const i8, kDown);
 
     gfxFlushBuffers();
     gfxSwapBuffers();
