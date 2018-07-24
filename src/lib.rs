@@ -1,4 +1,4 @@
-#![feature(lang_items, const_fn)]
+#![feature(lang_items, const_fn, panic_implementation)]
 #![no_std]
 #![allow(non_camel_case_types)]
 #![allow(non_upper_case_globals)]

@@ -1,6 +1,7 @@
 #[lang = "eh_personality"] pub extern fn eh_personality() {}
 
-#[lang = "panic_fmt"] #[no_mangle] pub extern fn panic_fmt() -> ! { loop{} }
+use core::panic::PanicInfo;
+#[panic_implementation] #[no_mangle] pub fn panic(_info : &PanicInfo) -> ! { loop{} }
 
 pub enum c_void {}
 pub type c_char = i8;

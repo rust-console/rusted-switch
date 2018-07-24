@@ -19,7 +19,7 @@ pub fn main() {
         .clang_arg("-I/opt/devkitpro/libnx/include")
         .clang_arg("-I/opt/devkitpro/devkitA64/aarch64-none-elf/include")
         
-        .clang_arg("-I/opt/devkitpro/devkitA64/lib/gcc/aarch64-none-elf/7.3.0/include")
+        .clang_arg("-I/opt/devkitpro/devkitA64/lib/gcc/aarch64-none-elf/8.1.0/include")
         // .whitelist_function("consoleInit")
         // .whitelist_function("hidKeysDown")
         .bitfield_enum("HidMouseButton")
