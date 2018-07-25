@@ -19,7 +19,7 @@ pub fn main() {
         .clang_arg("-I/opt/devkitpro/libnx/include")
         .clang_arg("-I/opt/devkitpro/devkitA64/aarch64-none-elf/include")
         
-        .clang_arg("-I/opt/devkitpro/devkitA64/lib/gcc/aarch64-none-elf/7.3.0/include")
+        .clang_arg("-I/opt/devkitpro/devkitA64/lib/gcc/aarch64-none-elf/8.1.0/include")
         // .whitelist_function("consoleInit")
         // .whitelist_function("hidKeysDown")
         .bitfield_enum("HidMouseButton")
@@ -48,4 +48,7 @@ pub fn main() {
     bindings
         .write_to_file(out_path.join("bindings.rs"))
         .expect("Couldn't write bindings!");
+
+    println!("cargo:rustc-link-search=native=/opt/devkitpro/libnx/lib/");
+    println!("cargo:rustc-link-lib=static=nx");
 }
