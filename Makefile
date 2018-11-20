@@ -45,12 +45,12 @@ APP_VERSION	:= 0.0.5
 # rust variables
 #---------------------------------------------------------------------------------
 TARGET_TRIPLE ?= aarch64-none-elf
-XARGO ?= CARGO_INCREMENTAL=0 RUST_TARGET_PATH="$(TOPDIR)" xargo
+XARGO ?= RUST_TARGET_PATH="$(TOPDIR)" xargo
 
 RUST_BINARY := $(shell cat $(TOPDIR)/Cargo.toml | grep name | cut -d\" -f 2 | tr - _)
 RUST_BUILD_DIR := $(TOPDIR)/target/$(TARGET_TRIPLE)
 RUST_RELEASE_LIB := $(RUST_BUILD_DIR)/release/lib$(RUST_BINARY).a
-RUST_DEPS = $(TOPDIR)/Xargo.toml $(TOPDIR)/Cargo.toml $(TOPDIR)/build.rs $(TOPDIR)/src/*.rs
+RUST_DEPS = $(TOPDIR)/Cargo.toml $(TOPDIR)/build.rs $(TOPDIR)/src/*.rs
 RUST_LIB := $(TOPDIR)/$(BUILD)/lib$(RUST_BINARY).a
 
 #---------------------------------------------------------------------------------
