@@ -150,7 +150,7 @@ endif
 .PHONY: $(BUILD) clean all
 
 #---------------------------------------------------------------------------------
-all: $(BUILD)
+all: $(RUST_RELEASE_LIB) $(BUILD)
 
 $(BUILD):
 	mkdir -p $@ $(BUILD) $(OUTDIR)
@@ -161,7 +161,6 @@ clean:
 	@echo clean ...
 	@$(XARGO) clean
 	@rm -fr $(OUTDIR) $(BUILD)/*
-
 
 #---------------------------------------------------------------------------------
 else
@@ -207,9 +206,10 @@ check:
 	@$(XARGO) check --target=$(TARGET_TRIPLE)
 
 $(RUST_RELEASE_LIB): $(RUST_DEPS)
-	@echo "+ Building $@ [xargo --release]"
-	@echo $(XARGO) build --release --target=$(TARGET_TRIPLE)
-	@$(XARGO) build --release --target=$(TARGET_TRIPLE)
+	@echo "+ Building $@ [xargo --release] (via shell out)"
+	@echo "+ Command: $(XARGO) build --release --target=$(TARGET_TRIPLE)"
+	#@$(XARGO) build --release --target=$(TARGET_TRIPLE)
+	@$(shell bash -c '$(XARGO) build --release --target=$(TARGET_TRIPLE)')
 
 $(RUST_LIB): $(RUST_RELEASE_LIB) | $(BUILD_DIR)
 	@cp $< $@
