@@ -1,6 +1,6 @@
 [package]
 name = "rusted-switch"
-version = "0.0.5"
+version = "0.0.6"
 authors = ["igor@borges.me"]
 
 [lib]

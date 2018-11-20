@@ -39,7 +39,7 @@ EXEFS_SRC	:=	exefs_src
 
 APP_TITLE		:= Rusted Switch
 APP_AUTHOR	:= Igor Borges
-APP_VERSION	:= 0.0.5
+APP_VERSION	:= 0.0.6
 
 #---------------------------------------------------------------------------------
 # rust variables
