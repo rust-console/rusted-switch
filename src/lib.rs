@@ -1,10 +1,7 @@
-#![feature(lang_items, const_fn)]
 #![no_std]
 #![allow(non_camel_case_types)]
 #![allow(non_upper_case_globals)]
 #![allow(non_snake_case)]
-
-#![crate_type = "staticlib"]
 
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
@@ -15,13 +12,13 @@ pub unsafe extern fn rust_main() {
   while appletMainLoop() {
     hidScanInput();
 
-    let kDown = HidControllerKeys(hidKeysDown(HidControllerID::CONTROLLER_P1_AUTO) as u32);
+    let k_down = HidControllerKeys(hidKeysDown(HidControllerID::CONTROLLER_P1_AUTO) as u32);
 
-    if kDown == HidControllerKeys::KEY_PLUS {
+    if k_down == HidControllerKeys::KEY_PLUS {
       break;
     }
 
-    printf("This key is pressed: %d\n".as_ptr() as *const i8, kDown);
+    printf("This key is pressed: %d\n".as_ptr() as *const i8, k_down);
 
     gfxFlushBuffers();
     gfxSwapBuffers();
