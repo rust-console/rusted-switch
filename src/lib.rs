@@ -2,6 +2,9 @@
 #![allow(non_camel_case_types)]
 #![allow(non_upper_case_globals)]
 #![allow(non_snake_case)]
+#![feature(core_intrinsics)]
+
+use core::intrinsics::abort;
 
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
@@ -32,10 +35,8 @@ pub extern "C" fn main() -> ! {
     }
 
     gfxExit();
+    abort();
   }
-
-  // exit(0)
-  loop {}
 }
 
 pub mod lang_items;
