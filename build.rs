@@ -4,8 +4,12 @@ use std::env;
 use std::path::PathBuf;
 
 pub fn main() {
+    let devkitpro_path = env::var("DEVKITPRO").unwrap();
+    let devkitarm_path = env::var("DEVKITARM").unwrap();
+
     println!("cargo:rustc-link-lib=static=nx");
-    println!("cargo:rustc-link-search=native=/opt/devkitpro/libnx/lib");
+    println!("cargo:rustc-link-search=native={}/libnx/lib", devkitpro_path);
+    
     // The bindgen::Builder is the main entry point
     // to bindgen, and lets you build up options for
     // the resulting bindings.
@@ -18,10 +22,10 @@ pub fn main() {
 
         .header("wrapper.h")
 
-        .clang_arg("-I/opt/devkitpro/libnx/include")
-        .clang_arg("-I/opt/devkitpro/devkitA64/aarch64-none-elf/include")
-        
-        .clang_arg("-I/opt/devkitpro/devkitA64/lib/gcc/aarch64-none-elf/7.3.0/include")
+        .clang_arg(format!("-I{}/libnx/include", devkitpro_path))
+        .clang_arg(format!("-I{}/aarch64-none-elf/include", devkitarm_path))
+        .clang_arg(format!("-I{}/lib/gcc/aarch64-none-elf/7.3.0/include", devkitarm_path))
+
         // .whitelist_function("consoleInit")
         // .whitelist_function("hidKeysDown")
         .bitfield_enum("HidMouseButton")
