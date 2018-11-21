@@ -7,7 +7,7 @@
 ## How
 This project uses [rust-bindgen](https://github.com/rust-lang-nursery/rust-bindgen) to create bindings for [libnx](https://github.com/switchbrew/libnx).
 
-For some reason, I couldn't use Makefile to compile Rust, so that's why this `makew` file exists. Also, direct compilation from Rust to elf didn't find `_start` function to run the code, that's why there's a C -> Rust (-> C) architecture.
+If you have [devkitPro](https://devkitpro.org/wiki/Getting_Started) installed, it's just a matter of running `make`.
 
 ## Credits
 - [rpi3-rust-template](https://github.com/cs140e/rpi3-rust-template) on building for aarch64-none-elf.
