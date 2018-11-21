@@ -1,13 +1,3 @@
-use core::intrinsics::abort;
-use core::panic::PanicInfo;
-
-#[panic_handler]
-fn panic(_info: &PanicInfo) -> ! {
-  unsafe {
-    abort();
-  }
-}
-
 pub enum c_void {}
 pub type c_char = i8;
 pub type c_int = i32;

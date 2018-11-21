@@ -4,7 +4,7 @@
 #![allow(non_snake_case)]
 #![feature(core_intrinsics)]
 
-use core::intrinsics::abort;
+extern crate panic_abort;
 
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
@@ -35,7 +35,7 @@ pub extern "C" fn main() -> ! {
     }
 
     gfxExit();
-    abort();
+    panic!("Success. We shall however think on a way of exiting cleanly.");
   }
 }
 
