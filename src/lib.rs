@@ -8,29 +8,34 @@ include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 pub const fn null<T>() -> *mut T { 0 as *mut T }
 
 #[no_mangle]
-pub unsafe extern fn rust_main() {
-  consoleInit(null());
-  gfxInitDefault();
+pub extern "C" fn main() -> ! {
+  unsafe {
+    consoleInit(null());
+    gfxInitDefault();
 
-  printf("\x1b[16;16HPress PLUS to exit.".as_ptr() as *const i8);
+    printf("\x1b[16;16HPress PLUS to exit.".as_ptr() as *const i8);
 
-  while appletMainLoop() {
-    hidScanInput();
+    while appletMainLoop() {
+      hidScanInput();
 
-    let k_down = HidControllerKeys(hidKeysDown(HidControllerID::CONTROLLER_P1_AUTO) as u32);
+      let k_down = HidControllerKeys(hidKeysDown(HidControllerID::CONTROLLER_P1_AUTO) as u32);
 
-    if k_down == HidControllerKeys::KEY_PLUS {
-      break;
+      if k_down == HidControllerKeys::KEY_PLUS {
+        break;
+      }
+
+      printf("This key is pressed: %d\n".as_ptr() as *const i8, k_down);
+
+      gfxFlushBuffers();
+      gfxSwapBuffers();
+      gfxWaitForVsync();
     }
 
-    printf("This key is pressed: %d\n".as_ptr() as *const i8, k_down);
-
-    gfxFlushBuffers();
-    gfxSwapBuffers();
-    gfxWaitForVsync();
+    gfxExit();
   }
 
-  gfxExit();
+  // exit(0)
+  loop {}
 }
 
 pub mod lang_items;
