@@ -5,7 +5,6 @@ use std::path::PathBuf;
 
 pub fn main() {
     let devkitpro_path = env::var("DEVKITPRO").unwrap();
-    let devkitarm_path = env::var("DEVKITARM").unwrap();
 
     println!("cargo:rustc-link-lib=static=nx");
     println!("cargo:rustc-link-search=native={}/libnx/lib", devkitpro_path);
@@ -14,8 +13,7 @@ pub fn main() {
     // to bindgen, and lets you build up options for
     // the resulting bindings.
     let bindings = bindgen::Builder::default()
-        // The input header we would like to generate
-        // bindings for.
+        // The input header we would like to generate bindings for.
         .trust_clang_mangling(false)
         .use_core()
         .ctypes_prefix("lang_items")
@@ -23,11 +21,8 @@ pub fn main() {
         .header("wrapper.h")
 
         .clang_arg(format!("-I{}/libnx/include", devkitpro_path))
-        .clang_arg(format!("-I{}/aarch64-none-elf/include", devkitarm_path))
-        .clang_arg(format!("-I{}/lib/gcc/aarch64-none-elf/7.3.0/include", devkitarm_path))
+        .clang_arg(format!("-I{}/devkitA64/aarch64-none-elf/include", devkitpro_path))
 
-        // .whitelist_function("consoleInit")
-        // .whitelist_function("hidKeysDown")
         .bitfield_enum("HidMouseButton")
         .bitfield_enum("HidKeyboardModifier")
         .rustified_enum("HidKeyboardScancode")
