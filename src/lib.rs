@@ -9,7 +9,8 @@ pub const fn null<T>() -> *mut T { 0 as *mut T }
 
 #[no_mangle]
 pub unsafe extern fn rust_main() {
-  let _console = consoleInit(null());
+  consoleInit(null());
+  gfxInitDefault();
 
   printf("\x1b[16;16HPress PLUS to exit.".as_ptr() as *const i8);
 
@@ -28,6 +29,8 @@ pub unsafe extern fn rust_main() {
     gfxSwapBuffers();
     gfxWaitForVsync();
   }
+
+  gfxExit();
 }
 
 pub mod lang_items;
