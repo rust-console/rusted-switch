@@ -4,6 +4,8 @@ use std::env;
 use std::path::PathBuf;
 
 pub fn main() {
+    println!("cargo:rustc-link-lib=static=nx");
+    println!("cargo:rustc-link-search=native=/opt/devkitpro/libnx/lib");
     // The bindgen::Builder is the main entry point
     // to bindgen, and lets you build up options for
     // the resulting bindings.
@@ -32,6 +34,8 @@ pub fn main() {
         .rustified_enum("HidControllerJoystick")
         .bitfield_enum("HidControllerConnectionState")
         .rustified_enum("HidControllerID")
+
+        .generate_inline_functions(true)
 
         .blacklist_type("u8")
         .blacklist_type("u16")

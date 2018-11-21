@@ -10,7 +10,6 @@ int main(int argc, char **argv) {
 	// I'm not sure why but if I don't call consoleInit() from C
 	// the <switch.h> library is not linked properly ¯\_(ツ)_/¯
 	gfxInitDefault();
-	consoleInit(NULL);
 
 	rust_main();
 

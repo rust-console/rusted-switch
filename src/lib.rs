@@ -5,8 +5,12 @@
 
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
+pub const fn null<T>() -> *mut T { 0 as *mut T }
+
 #[no_mangle]
 pub unsafe extern fn rust_main() {
+  let _console = consoleInit(null());
+
   printf("\x1b[16;16HPress PLUS to exit.".as_ptr() as *const i8);
 
   while appletMainLoop() {
