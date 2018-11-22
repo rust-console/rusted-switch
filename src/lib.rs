@@ -14,27 +14,34 @@ pub const fn null<T>() -> *mut T { 0 as *mut T }
 pub extern "C" fn main() -> ! {
   unsafe {
     consoleInit(null());
-    gfxInitDefault();
 
-    printf("\x1b[16;16HPress PLUS to exit.".as_ptr() as *const i8);
+    let mut k_held_old = HidControllerKeys(0);
+    
+    printf("\x1b[1;1HPress PLUS to exit.\n".as_ptr() as *const i8);
+    printf("\x1b[2;1HOr any other key to see its value.\n".as_ptr() as *const i8);
 
     while appletMainLoop() {
       hidScanInput();
+      let k_held = HidControllerKeys(hidKeysHeld(HidControllerID::CONTROLLER_P1_AUTO) as u32);
 
-      let k_down = HidControllerKeys(hidKeysDown(HidControllerID::CONTROLLER_P1_AUTO) as u32);
-
-      if k_down == HidControllerKeys::KEY_PLUS {
+      if k_held == HidControllerKeys::KEY_PLUS {
         break;
       }
 
-      printf("This key is pressed: %d\n".as_ptr() as *const i8, k_down);
+      if k_held != k_held_old {
+        consoleClear();
 
-      gfxFlushBuffers();
-      gfxSwapBuffers();
-      gfxWaitForVsync();
+        printf("\x1b[1;1HPress PLUS to exit.\n".as_ptr() as *const i8);
+        printf("\x1b[2;1HOr any other key to see its value.\n".as_ptr() as *const i8);
+        printf("\x1b[3;1HThis key is currently pressed: %d\n".as_ptr() as *const i8, k_held);
+      }
+
+      k_held_old = k_held;
+
+      consoleUpdate(null());
     }
 
-    gfxExit();
+    consoleExit(null());
     panic!("Success. We shall however think on a way of exiting cleanly.");
   }
 }
