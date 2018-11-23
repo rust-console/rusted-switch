@@ -11,7 +11,7 @@ include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 pub const fn null<T>() -> *mut T { 0 as *mut T }
 
 #[no_mangle]
-pub extern "C" fn main() -> ! {
+pub extern "C" fn main() {
   unsafe {
     consoleInit(null());
 
@@ -42,7 +42,6 @@ pub extern "C" fn main() -> ! {
     }
 
     consoleExit(null());
-    panic!("Success. We shall however think on a way of exiting cleanly.");
   }
 }
 
