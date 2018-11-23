@@ -160,7 +160,7 @@ $(BUILD):
 clean:
 	@echo clean ...
 	@$(XARGO) clean
-	@rm -fr $(OUTDIR) $(BUILD)/*
+	@rm -fr $(OUTDIR) $(BUILD)/* target
 
 #---------------------------------------------------------------------------------
 else
