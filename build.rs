@@ -23,24 +23,19 @@ pub fn main() {
         .clang_arg(format!("-I{}/libnx/include", devkitpro_path))
         .clang_arg(format!("-I{}/devkitA64/aarch64-none-elf/include", devkitpro_path))
 
-        .bitfield_enum("HidMouseButton")
-        .bitfield_enum("HidKeyboardModifier")
-        .rustified_enum("HidKeyboardScancode")
-        .bitfield_enum("HidControllerType")
-        .rustified_enum("HidControllerLayoutType")
-        .bitfield_enum("HidControllerColorDescription")
-        .bitfield_enum("HidControllerKeys")
-        .rustified_enum("HidControllerJoystick")
-        .bitfield_enum("HidControllerConnectionState")
-        .rustified_enum("HidControllerID")
+        .rustified_enum("HidNpadStyleTag")
+        .rustified_enum("HidNpadIdType")
+        .rustified_enum("HidNpadButton")
 
         .generate_inline_functions(true)
 
-        .blacklist_type("u8")
-        .blacklist_type("u16")
-        .blacklist_type("u32")
-        .blacklist_type("u64")
+        .blocklist_type("u8")
+        .blocklist_type("u16")
+        .blocklist_type("u32")
+        .blocklist_type("u64")
         
+        .derive_default(true)
+
         // Finish the builder and generate the bindings.
         .generate()
         // Unwrap the Result and panic on failure.

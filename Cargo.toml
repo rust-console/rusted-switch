@@ -21,7 +21,7 @@ lto = true
 
 [dependencies]
 rlibc = "*"
-panic-abort = "0.3.1"
+panic-abort = "0.3.2"
 
 [build-dependencies]
-bindgen = "0.37.0"
+bindgen = "0.65.1"
